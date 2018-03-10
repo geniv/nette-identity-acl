@@ -1,0 +1,29 @@
+{
+  "name": "geniv/nette-identity-acl",
+  "description": "Identity ACL extension for Nette Framework",
+  "keywords": [
+    "nette",
+    "identity",
+    "user",
+    "acl",
+    "geniv"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Radek Fryšták",
+      "email": "geniv.radek@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.0.0",
+    "nette/nette": ">=2.4.0",
+    "geniv/nette-general-form": ">=1.0.0",
+    "geniv/nette-identity-authorizator": ">=1.0.0"
+  },
+  "autoload": {
+    "classmap": [
+      "src/"
+    ]
+  }
+}
