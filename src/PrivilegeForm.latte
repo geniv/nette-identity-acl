@@ -10,7 +10,7 @@ privilege<br>
 {else}
     list:<br>
     {foreach $privilege as $item}
-        {$item['privilege']}
+        {$getValue($item['privilege'])}
         <a n:href="Update! $item['id']">update</a>
         <a onclick="return confirm('Delete {$item['privilege']}?')" n:href="Delete! $item['id']">delete</a><br>
     {/foreach}
