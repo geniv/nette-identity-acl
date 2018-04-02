@@ -10,7 +10,7 @@ role<br>
 {else}
     list:<br>
     {foreach $role as $item}
-        {$item['role']}
+        {$getValue($item['role'])}
         <a n:href="Update! $item['id']">update</a>
         <a onclick="return confirm('Delete {$item['role']}?')" n:href="Delete! $item['id']">delete</a><br>
     {/foreach}

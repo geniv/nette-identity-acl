@@ -10,7 +10,7 @@ resource<br>
 {else}
     list:<br>
     {foreach $resource as $item}
-        {$item['resource']}
+        {$getValue($item['resource'])}
         <a n:href="Update! $item['id']">update</a>
         <a onclick="return confirm('Delete {$item['resource']}?')" n:href="Delete! $item['id']">delete</a><br>
     {/foreach}

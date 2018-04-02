@@ -5,6 +5,7 @@ namespace Identity\Acl;
 use GeneralForm\IFormContainer;
 use Identity\Authorizator\Authorizator;
 use Nette\Application\UI\Form;
+use Nette\Utils\Callback;
 
 
 /**
@@ -17,6 +18,8 @@ class AclFormContainer implements IFormContainer
 {
     /** @var Authorizator */
     private $authorizator;
+    /** @var callable */
+    private $renderCallback;
 
 
     /**
@@ -27,6 +30,18 @@ class AclFormContainer implements IFormContainer
     public function __construct(Authorizator $authorizator)
     {
         $this->authorizator = $authorizator;
+        $this->renderCallback = function ($data) { return $data; };
+    }
+
+
+    /**
+     * Set render callback.
+     *
+     * @param callable $callback
+     */
+    public function setRenderCallback(callable $callback)
+    {
+        $this->renderCallback = $callback;
     }
 
 
@@ -44,7 +59,7 @@ class AclFormContainer implements IFormContainer
         $form->addCheckbox('all', 'acl-aclform-all');
 
         foreach ($this->authorizator->getResource() as $item) {
-            $form->addGroup($item['resource']);
+            $form->addGroup(Callback::invokeSafe($this->renderCallback, [$item['resource']], null));
 
             //'acl-aclform-' . $item['resource']
             $form->addCheckboxList($item['id'])

@@ -31,6 +31,8 @@ class ResourceForm extends Control implements ITemplatePath
     private $state = null;
     /** @var callback method */
     public $onSuccess, $onError;
+    /** @var callable */
+    private $renderCallback;
 
 
     /**
@@ -49,6 +51,7 @@ class ResourceForm extends Control implements ITemplatePath
         $this->translator = $translator;
 
         $this->templatePath = __DIR__ . '/ResourceForm.latte';  // default path
+        $this->renderCallback = function ($data) { return $data; };
     }
 
 
@@ -60,6 +63,17 @@ class ResourceForm extends Control implements ITemplatePath
     public function setTemplatePath(string $path)
     {
         $this->templatePath = $path;
+    }
+
+
+    /**
+     * Set render callback.
+     *
+     * @param callable $callback
+     */
+    public function setRenderCallback(callable $callback)
+    {
+        $this->renderCallback = $callback;
     }
 
 
@@ -144,6 +158,7 @@ class ResourceForm extends Control implements ITemplatePath
 
         $template->state = $this->state;
         $template->resource = $this->authorizator->getResource();
+        $template->getValue = $this->renderCallback;
 
         $template->setTranslator($this->translator);
         $template->setFile($this->templatePath);

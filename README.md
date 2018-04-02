@@ -44,6 +44,7 @@ presenters:
 ```php
 protected function createComponentRoleForm(RoleForm $roleForm): RoleForm
 {
+    //$roleForm->setRenderCallback(function ($data) { return $data; });
     //$roleForm->setTemplatePath(path);
     //$roleForm->onSuccess[] = function (array $values) { };
     //$roleForm->onError[] = function (array $values, Exception $e = null) { };
@@ -53,6 +54,7 @@ protected function createComponentRoleForm(RoleForm $roleForm): RoleForm
 
 protected function createComponentResourceForm(ResourceForm $resourceForm): ResourceForm
 {
+    //$resourceForm->setRenderCallback(function ($data) { return $data; });
     //$resourceForm->setTemplatePath(path);
     //$resourceForm->onSuccess[] = function (array $values) { };
     //$resourceForm->onError[] = function (array $values, Exception $e = null) { };
@@ -62,14 +64,17 @@ protected function createComponentResourceForm(ResourceForm $resourceForm): Reso
 
 protected function createComponentPrivilegeForm(PrivilegeForm $privilegeForm): PrivilegeForm
 {
+    //$privilegeForm->setRenderCallback(function ($data) { return $data; });
     //$privilegeForm->setTemplatePath(path);
     //$privilegeForm->onSuccess[] = function (array $values) { };
     //$privilegeForm->onError[] = function (array $values, Exception $e = null) { };
     return $privilegeForm;
 }
 
-protected function createComponentAclForm(AclForm $aclForm): AclForm
+
+protected function createComponentAclForm(AclForm $aclForm, AclFormContainer $aclFormContainer): AclForm
 {
+    //$aclFormContainer->setRenderCallback(function ($data) { return $data; });
     //$aclForm->setTemplatePath(path);
     //$aclForm->onSuccess[] = function (array $values) { };
     //$aclForm->onError[] = function (array $values) { };
