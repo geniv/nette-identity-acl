@@ -17,9 +17,9 @@ use Nette\Utils\Callback;
 class AclFormContainer implements IFormContainer
 {
     /** @var Authorizator */
-    private $authorizator;
+    protected $authorizator;
     /** @var callable */
-    private $renderCallback;
+    protected $renderCallback;
 
 
     /**
