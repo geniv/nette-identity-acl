@@ -62,6 +62,7 @@ class AclFormContainer implements IFormContainer
             $form->addGroup(Callback::invokeSafe($this->renderCallback, [$item['resource']], null));
 
             //'acl-aclform-' . $item['resource']
+//            $form->addMultiSelect($item['id'])
             $form->addCheckboxList($item['id'])
                 ->setItems($items)
                 ->setTranslator(null);
