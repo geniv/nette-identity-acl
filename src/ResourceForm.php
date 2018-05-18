@@ -4,8 +4,8 @@ namespace Identity\Acl;
 
 use GeneralForm\IFormContainer;
 use GeneralForm\ITemplatePath;
-use Identity\Authorizator\Authorizator;
 use Identity\Authorizator\Drivers\UniqueConstraintViolationException;
+use Identity\Authorizator\IIdentityAuthorizator;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;
 use Nette\Localization\ITranslator;
@@ -21,8 +21,8 @@ class ResourceForm extends Control implements ITemplatePath
 {
     /** @var IFormContainer */
     private $formContainer;
-    /** @var Authorizator */
-    private $authorizator;
+    /** @var IIdentityAuthorizator */
+    private $identityAuthorizator;
     /** @var ITranslator|null */
     private $translator;
     /** @var string */
@@ -38,16 +38,16 @@ class ResourceForm extends Control implements ITemplatePath
     /**
      * ResourceForm constructor.
      *
-     * @param IFormContainer   $formContainer
-     * @param Authorizator     $authorizator
-     * @param ITranslator|null $translator
+     * @param IFormContainer        $formContainer
+     * @param IIdentityAuthorizator $identityAuthorizator
+     * @param ITranslator|null      $translator
      */
-    public function __construct(IFormContainer $formContainer, Authorizator $authorizator, ITranslator $translator = null)
+    public function __construct(IFormContainer $formContainer, IIdentityAuthorizator $identityAuthorizator, ITranslator $translator = null)
     {
         parent::__construct();
 
         $this->formContainer = $formContainer;
-        $this->authorizator = $authorizator;
+        $this->identityAuthorizator = $identityAuthorizator;
         $this->translator = $translator;
 
         $this->templatePath = __DIR__ . '/ResourceForm.latte';  // default path
@@ -93,7 +93,7 @@ class ResourceForm extends Control implements ITemplatePath
 
         $form->onSuccess[] = function (Form $form, array $values) {
             try {
-                if ($this->authorizator->saveResource($values) >= 0) {
+                if ($this->identityAuthorizator->saveResource($values) >= 0) {
                     $this->onSuccess($values);
                 }
             } catch (UniqueConstraintViolationException $e) {
@@ -122,7 +122,7 @@ class ResourceForm extends Control implements ITemplatePath
     {
         $this->state = 'update';
 
-        $resource = $this->authorizator->getResource();
+        $resource = $this->identityAuthorizator->getResource();
         if (isset($resource[$id])) {
             $this['form']->setDefaults($resource[$id]);
         }
@@ -136,11 +136,11 @@ class ResourceForm extends Control implements ITemplatePath
      */
     public function handleDelete($id)
     {
-        $resource = $this->authorizator->getResource();
+        $resource = $this->identityAuthorizator->getResource();
         if (isset($resource[$id])) {
             $values = (array) $resource[$id];
 
-            if ($this->authorizator->saveResource(['id' => $id])) {
+            if ($this->identityAuthorizator->saveResource(['id' => $id])) {
                 $this->onSuccess($values);
             } else {
                 $this->onError($values);
@@ -157,7 +157,7 @@ class ResourceForm extends Control implements ITemplatePath
         $template = $this->getTemplate();
 
         $template->state = $this->state;
-        $template->resource = $this->authorizator->getResource();
+        $template->resource = $this->identityAuthorizator->getResource();
         $template->getValue = $this->renderCallback;
 
         $template->setTranslator($this->translator);
