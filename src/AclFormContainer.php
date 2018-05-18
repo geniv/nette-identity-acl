@@ -3,7 +3,7 @@
 namespace Identity\Acl;
 
 use GeneralForm\IFormContainer;
-use Identity\Authorizator\Authorizator;
+use Identity\Authorizator\IIdentityAuthorizator;
 use Nette\Application\UI\Form;
 use Nette\Utils\Callback;
 
@@ -16,8 +16,8 @@ use Nette\Utils\Callback;
  */
 class AclFormContainer implements IFormContainer
 {
-    /** @var Authorizator */
-    protected $authorizator;
+    /** @var IIdentityAuthorizator */
+    protected $identityAuthorizator;
     /** @var callable */
     protected $renderCallback;
 
@@ -25,11 +25,11 @@ class AclFormContainer implements IFormContainer
     /**
      * AclFormContainer constructor.
      *
-     * @param Authorizator $authorizator
+     * @param IIdentityAuthorizator $identityAuthorizator
      */
-    public function __construct(Authorizator $authorizator)
+    public function __construct(IIdentityAuthorizator $identityAuthorizator)
     {
-        $this->authorizator = $authorizator;
+        $this->identityAuthorizator = $identityAuthorizator;
         $this->renderCallback = function ($data) { return $data; };
     }
 
@@ -52,13 +52,13 @@ class AclFormContainer implements IFormContainer
      */
     public function getForm(Form $form)
     {
-        $items = array_map(function ($row) { return $row['privilege']; }, $this->authorizator->getPrivilege());
+        $items = array_map(function ($row) { return $row['privilege']; }, $this->identityAuthorizator->getPrivilege());
         $items['all'] = 'all';
 
         $form->addGroup('acl-aclform-group-all');
         $form->addCheckbox('all', 'acl-aclform-all');
 
-        foreach ($this->authorizator->getResource() as $item) {
+        foreach ($this->identityAuthorizator->getResource() as $item) {
             $form->addGroup(Callback::invokeSafe($this->renderCallback, [$item['resource']], null));
 
             //'acl-aclform-' . $item['resource']

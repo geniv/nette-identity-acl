@@ -4,7 +4,7 @@ namespace Identity\Acl;
 
 use GeneralForm\IFormContainer;
 use GeneralForm\ITemplatePath;
-use Identity\Authorizator\Authorizator;
+use Identity\Authorizator\IIdentityAuthorizator;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;
 use Nette\Localization\ITranslator;
@@ -20,8 +20,8 @@ class AclForm extends Control implements ITemplatePath
 {
     /** @var IFormContainer */
     private $formContainer;
-    /** @var Authorizator */
-    private $authorizator;
+    /** @var IIdentityAuthorizator */
+    private $identityAuthorizator;
     /** @var ITranslator|null */
     private $translator;
     /** @var string */
@@ -35,16 +35,16 @@ class AclForm extends Control implements ITemplatePath
     /**
      * AclForm constructor.
      *
-     * @param IFormContainer   $formContainer
-     * @param Authorizator     $authorizator
-     * @param ITranslator|null $translator
+     * @param IFormContainer        $formContainer
+     * @param IIdentityAuthorizator $identityAuthorizator
+     * @param ITranslator|null      $translator
      */
-    public function __construct(IFormContainer $formContainer, Authorizator $authorizator, ITranslator $translator = null)
+    public function __construct(IFormContainer $formContainer, IIdentityAuthorizator $identityAuthorizator, ITranslator $translator = null)
     {
         parent::__construct();
 
         $this->formContainer = $formContainer;
-        $this->authorizator = $authorizator;
+        $this->identityAuthorizator = $identityAuthorizator;
         $this->translator = $translator;
 
         $this->templatePath = __DIR__ . '/AclForm.latte';  // default path
@@ -80,7 +80,7 @@ class AclForm extends Control implements ITemplatePath
             $idRole = $values['idRole'];
             unset($values['idRole']);
 
-            if ($this->authorizator->saveAcl($idRole, $values)) {
+            if ($this->identityAuthorizator->saveAcl($idRole, $values)) {
                 $this->onSuccess($values);
             } else {
                 $this->onError($values);
@@ -100,10 +100,10 @@ class AclForm extends Control implements ITemplatePath
         $this->idRole = $id;
 
         $defaultItems = [];
-        foreach ($this->authorizator->getResource() as $item) {
-            $acl = $this->authorizator->getAcl($id, $item['id']);
+        foreach ($this->identityAuthorizator->getResource() as $item) {
+            $acl = $this->identityAuthorizator->getAcl($id, $item['id']);
 
-            if ($this->authorizator->isAll($id, $item['id'])) {
+            if ($this->identityAuthorizator->isAll($id, $item['id'])) {
                 // idRole, idResource, ALL
                 $defaultItems[$item['id']] = 'all';
             } else {
@@ -111,7 +111,7 @@ class AclForm extends Control implements ITemplatePath
             }
         }
 
-        if ($this->authorizator->isAll($id)) {
+        if ($this->identityAuthorizator->isAll($id)) {
             // idRole, ALL, ALL
             $defaultItems['all'] = true;
         }
@@ -126,7 +126,7 @@ class AclForm extends Control implements ITemplatePath
     {
         $template = $this->getTemplate();
 
-        $template->role = $this->authorizator->getRole();
+        $template->role = $this->identityAuthorizator->getRole();
         $template->idRole = $this->idRole;
 
         $template->setTranslator($this->translator);

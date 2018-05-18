@@ -4,8 +4,8 @@ namespace Identity\Acl;
 
 use GeneralForm\IFormContainer;
 use GeneralForm\ITemplatePath;
-use Identity\Authorizator\Authorizator;
 use Identity\Authorizator\Drivers\UniqueConstraintViolationException;
+use Identity\Authorizator\IIdentityAuthorizator;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;
 use Nette\Localization\ITranslator;
@@ -21,8 +21,8 @@ class PrivilegeForm extends Control implements ITemplatePath
 {
     /** @var IFormContainer */
     private $formContainer;
-    /** @var Authorizator */
-    private $authorizator;
+    /** @var IIdentityAuthorizator */
+    private $identityAuthorizator;
     /** @var ITranslator|null */
     private $translator;
     /** @var string template path */
@@ -38,16 +38,16 @@ class PrivilegeForm extends Control implements ITemplatePath
     /**
      * PrivilegeForm constructor.
      *
-     * @param IFormContainer   $formContainer
-     * @param Authorizator     $authorizator
-     * @param ITranslator|null $translator
+     * @param IFormContainer        $formContainer
+     * @param IIdentityAuthorizator $identityAuthorizator
+     * @param ITranslator|null      $translator
      */
-    public function __construct(IFormContainer $formContainer, Authorizator $authorizator, ITranslator $translator = null)
+    public function __construct(IFormContainer $formContainer, IIdentityAuthorizator $identityAuthorizator, ITranslator $translator = null)
     {
         parent::__construct();
 
         $this->formContainer = $formContainer;
-        $this->authorizator = $authorizator;
+        $this->identityAuthorizator = $identityAuthorizator;
         $this->translator = $translator;
 
         $this->templatePath = __DIR__ . '/PrivilegeForm.latte';  // default path
@@ -93,7 +93,7 @@ class PrivilegeForm extends Control implements ITemplatePath
 
         $form->onSuccess[] = function (Form $form, array $values) {
             try {
-                if ($this->authorizator->savePrivilege($values) >= 0) {
+                if ($this->identityAuthorizator->savePrivilege($values) >= 0) {
                     $this->onSuccess($values);
                 }
             } catch (UniqueConstraintViolationException $e) {
@@ -122,7 +122,7 @@ class PrivilegeForm extends Control implements ITemplatePath
     {
         $this->state = 'update';
 
-        $privilege = $this->authorizator->getPrivilege();
+        $privilege = $this->identityAuthorizator->getPrivilege();
         if (isset($privilege[$id])) {
             $this['form']->setDefaults($privilege[$id]);
         }
@@ -136,11 +136,11 @@ class PrivilegeForm extends Control implements ITemplatePath
      */
     public function handleDelete($id)
     {
-        $privilege = $this->authorizator->getPrivilege();
+        $privilege = $this->identityAuthorizator->getPrivilege();
         if (isset($privilege[$id])) {
             $values = (array) $privilege[$id];
 
-            if ($this->authorizator->savePrivilege(['id' => $id])) {
+            if ($this->identityAuthorizator->savePrivilege(['id' => $id])) {
                 $this->onSuccess($values);
             } else {
                 $this->onError($values);
@@ -157,7 +157,7 @@ class PrivilegeForm extends Control implements ITemplatePath
         $template = $this->getTemplate();
 
         $template->state = $this->state;
-        $template->privilege = $this->authorizator->getPrivilege();
+        $template->privilege = $this->identityAuthorizator->getPrivilege();
         $template->getValue = $this->renderCallback;
 
         $template->setTranslator($this->translator);
