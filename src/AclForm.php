@@ -93,17 +93,17 @@ class AclForm extends Control implements ITemplatePath
     /**
      * Handle update.
      *
-     * @param $id
+     * @param string $id
      */
-    public function handleUpdate($id)
+    public function handleUpdate(string $id)
     {
         $this->idRole = $id;
 
         $defaultItems = [];
         foreach ($this->identityAuthorizator->getResource() as $item) {
-            $acl = $this->identityAuthorizator->getAcl($id, $item['id']);
+            $acl = $this->identityAuthorizator->getAcl($id, (string) $item['id']);
 
-            if ($this->identityAuthorizator->isAll($id, $item['id'])) {
+            if ($this->identityAuthorizator->isAll($id, (string) $item['id'])) {
                 // idRole, idResource, ALL
                 $defaultItems[$item['id']] = 'all';
             } else {
