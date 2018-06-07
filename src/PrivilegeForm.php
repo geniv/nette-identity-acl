@@ -116,15 +116,15 @@ class PrivilegeForm extends Control implements ITemplatePath
     /**
      * Handle update.
      *
-     * @param $id
+     * @param string $id
      */
-    public function handleUpdate($id)
+    public function handleUpdate(string $id)
     {
         $this->state = 'update';
 
-        $privilege = $this->identityAuthorizator->getPrivilege();
-        if (isset($privilege[$id])) {
-            $this['form']->setDefaults($privilege[$id]);
+        $privilege = $this->identityAuthorizator->getPrivilege($id);
+        if ($privilege) {
+            $this['form']->setDefaults($privilege);
         }
     }
 
@@ -132,18 +132,16 @@ class PrivilegeForm extends Control implements ITemplatePath
     /**
      * Handle delete.
      *
-     * @param $id
+     * @param string $id
      */
-    public function handleDelete($id)
+    public function handleDelete(string $id)
     {
-        $privilege = $this->identityAuthorizator->getPrivilege();
-        if (isset($privilege[$id])) {
-            $values = (array) $privilege[$id];
-
+        $privilege = $this->identityAuthorizator->getPrivilege($id);
+        if ($privilege) {
             if ($this->identityAuthorizator->savePrivilege(['id' => $id])) {
-                $this->onSuccess($values);
+                $this->onSuccess($privilege);
             } else {
-                $this->onError($values);
+                $this->onError($privilege);
             }
         }
     }

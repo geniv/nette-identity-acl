@@ -116,15 +116,15 @@ class ResourceForm extends Control implements ITemplatePath
     /**
      * Handle update.
      *
-     * @param $id
+     * @param string $id
      */
-    public function handleUpdate($id)
+    public function handleUpdate(string $id)
     {
         $this->state = 'update';
 
-        $resource = $this->identityAuthorizator->getResource();
-        if (isset($resource[$id])) {
-            $this['form']->setDefaults($resource[$id]);
+        $resource = $this->identityAuthorizator->getResource($id);
+        if ($resource) {
+            $this['form']->setDefaults($resource);
         }
     }
 
@@ -132,18 +132,16 @@ class ResourceForm extends Control implements ITemplatePath
     /**
      * Handle delete.
      *
-     * @param $id
+     * @param string $id
      */
-    public function handleDelete($id)
+    public function handleDelete(string $id)
     {
-        $resource = $this->identityAuthorizator->getResource();
-        if (isset($resource[$id])) {
-            $values = (array) $resource[$id];
-
+        $resource = $this->identityAuthorizator->getResource($id);
+        if ($resource) {
             if ($this->identityAuthorizator->saveResource(['id' => $id])) {
-                $this->onSuccess($values);
+                $this->onSuccess($resource);
             } else {
-                $this->onError($values);
+                $this->onError($resource);
             }
         }
     }
