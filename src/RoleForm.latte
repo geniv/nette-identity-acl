@@ -1,13 +1,13 @@
 <br>
 role<br>
 <br>
-<a n:href="Add!">add role</a><br>
 
 {if $state=='add' || $state=='update'}
     <a n:href="this">back</a>
     <br>
     {control form}
 {else}
+    <a n:href="Add!">add role</a><br>
     list:<br>
     {foreach $role as $item}
         {$getValue($item['role'])}

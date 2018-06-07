@@ -117,15 +117,15 @@ class RoleForm extends Control implements ITemplatePath
     /**
      * Handle update.
      *
-     * @param $id
+     * @param string $id
      */
-    public function handleUpdate($id)
+    public function handleUpdate(string $id)
     {
         $this->state = 'update';
 
-        $role = $this->identityAuthorizator->getRole();
-        if (isset($role[$id])) {
-            $this['form']->setDefaults($role[$id]);
+        $role = $this->identityAuthorizator->getRole($id);
+        if ($role) {
+            $this['form']->setDefaults($role);
         }
     }
 
@@ -133,18 +133,16 @@ class RoleForm extends Control implements ITemplatePath
     /**
      * Handle delete.
      *
-     * @param $id
+     * @param string $id
      */
-    public function handleDelete($id)
+    public function handleDelete(string $id)
     {
-        $role = $this->identityAuthorizator->getRole();
-        if (isset($role[$id])) {
-            $values = (array) $role[$id];
-
+        $role = $this->identityAuthorizator->getRole($id);
+        if ($role) {
             if ($this->identityAuthorizator->saveRole(['id' => $id])) {
-                $this->onSuccess($values);
+                $this->onSuccess($role);
             } else {
-                $this->onError($values);
+                $this->onError($role);
             }
         }
     }

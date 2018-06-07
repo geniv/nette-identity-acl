@@ -52,7 +52,7 @@ class AclFormContainer implements IFormContainer
      */
     public function getForm(Form $form)
     {
-        $items = array_map(function ($row) { return $row['privilege']; }, $this->identityAuthorizator->getPrivilege());
+        $items = array_flip(array_map(function ($row) { return $row['id']; }, $this->identityAuthorizator->getPrivilege()));
         $items['all'] = 'all';
 
         $form->addGroup('acl-aclform-group-all');
@@ -61,7 +61,6 @@ class AclFormContainer implements IFormContainer
         foreach ($this->identityAuthorizator->getResource() as $item) {
             $form->addGroup(Callback::invokeSafe($this->renderCallback, [$item['resource']], null));
 
-            //'acl-aclform-' . $item['resource']
 //            $form->addMultiSelect($item['id'])
             $form->addCheckboxList($item['id'])
                 ->setItems($items)

@@ -1,13 +1,13 @@
 <br>
 privilege<br>
 <br>
-<a n:href="Add!">add privilege</a><br>
 
 {if $state=='add' || $state=='update'}
     <a n:href="this">back</a>
     <br>
     {control form}
 {else}
+    <a n:href="Add!">add privilege</a><br>
     list:<br>
     {foreach $privilege as $item}
         {$getValue($item['privilege'])}
