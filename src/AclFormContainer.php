@@ -58,8 +58,15 @@ class AclFormContainer implements IFormContainer
         $form->addGroup('acl-aclform-group-all');
         $form->addCheckbox('all', 'acl-aclform-all');
 
+        $listCurrentAcl = $this->identityAuthorizator->loadListCurrentAcl();
         foreach ($this->identityAuthorizator->getResource() as $item) {
             $form->addGroup(Callback::invokeSafe($this->renderCallback, [$item['resource']], null));
+
+            // apply current list acl from file
+            if (isset($listCurrentAcl[$item['id']])) {
+                $items = array_combine($listCurrentAcl[$item['id']], $listCurrentAcl[$item['id']]);
+                $items['all'] = 'all';
+            }
 
 //            $form->addMultiSelect($item['id'])
             $form->addCheckboxList($item['id'])
