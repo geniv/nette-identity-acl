@@ -91,7 +91,6 @@ class RoleForm extends Control implements ITemplatePath
         $form->addHidden('id');
         $this->formContainer->getForm($form);
 
-
         $form->onSuccess[] = function (Form $form, array $values) {
             try {
                 if ($this->identityAuthorizator->saveRole($values) >= 0) {

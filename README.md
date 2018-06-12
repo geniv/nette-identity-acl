@@ -75,6 +75,7 @@ protected function createComponentPrivilegeForm(PrivilegeForm $privilegeForm): P
 protected function createComponentAclForm(AclForm $aclForm, AclFormContainer $aclFormContainer): AclForm
 {
     //$aclFormContainer->setRenderCallback(function ($data) { return $data; });
+    //$aclFormContainer->setMultiSelect(true);
     //$aclForm->setTemplatePath(path);
     //$aclForm->onSuccess[] = function (array $values) { };
     //$aclForm->onError[] = function (array $values) { };
