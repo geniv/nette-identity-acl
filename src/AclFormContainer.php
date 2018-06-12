@@ -20,6 +20,8 @@ class AclFormContainer implements IFormContainer
     protected $identityAuthorizator;
     /** @var callable */
     protected $renderCallback;
+    /** @var bool */
+    private $multiSelect;
 
 
     /**
@@ -46,14 +48,26 @@ class AclFormContainer implements IFormContainer
 
 
     /**
+     * Set multi select.
+     *
+     * @param bool $state
+     */
+    public function setMultiSelect(bool $state)
+    {
+        $this->multiSelect = $state;
+    }
+
+
+    /**
      * Get form.
      *
      * @param Form $form
      */
     public function getForm(Form $form)
     {
-        $items = array_flip(array_map(function ($row) { return $row['id']; }, $this->identityAuthorizator->getPrivilege()));
-        $items['all'] = 'all';
+        $privilege = array_flip(array_map(function ($row) { return $row['id']; }, $this->identityAuthorizator->getPrivilege()));
+        $privilege['all'] = 'all';
+        $items = $privilege;
 
         $form->addGroup('acl-aclform-group-all');
         $form->addCheckbox('all', 'acl-aclform-all');
@@ -63,15 +77,20 @@ class AclFormContainer implements IFormContainer
             $form->addGroup(Callback::invokeSafe($this->renderCallback, [$item['resource']], null));
 
             // apply current list acl from file
-            if (isset($listCurrentAcl[$item['id']])) {
-                $items = array_combine($listCurrentAcl[$item['id']], $listCurrentAcl[$item['id']]);
-                $items['all'] = 'all';
+            if (isset($listCurrentAcl[$item['resource']])) {
+                $list = $listCurrentAcl[$item['resource']];
+                // filter by privilege
+                $items = array_filter($privilege, function ($row) use ($list) { return in_array($row, $list); });
+                $items['all'] = 'all';  // add all
             }
 
-//            $form->addMultiSelect($item['id'])
-            $form->addCheckboxList($item['id'])
-                ->setItems($items)
-                ->setTranslator(null);
+            // switch element
+            if ($this->multiSelect) {
+                $element = $form->addMultiSelect($item['id']);
+            } else {
+                $element = $form->addCheckboxList($item['id']);
+            }
+            $element->setItems($items)->setTranslator(null);
         }
         $form->addGroup();
 
