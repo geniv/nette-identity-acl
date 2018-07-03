@@ -69,13 +69,10 @@ class AclFormContainer implements IFormContainer
         $privilege['all'] = 'all';
         $items = $privilege;
 
-        $form->addGroup('acl-aclform-group-all');
         $form->addCheckbox('all', 'acl-aclform-all');
 
         $listCurrentAcl = $this->identityAuthorizator->loadListCurrentAcl();
         foreach ($this->identityAuthorizator->getResource() as $item) {
-            $form->addGroup(Callback::invokeSafe($this->renderCallback, [$item['resource']], null));
-
             // apply current list acl from file
             if (isset($listCurrentAcl[$item['resource']])) {
                 $list = $listCurrentAcl[$item['resource']];
@@ -84,15 +81,15 @@ class AclFormContainer implements IFormContainer
                 $items['all'] = 'all';  // add all
             }
 
+            $label = Callback::invokeSafe($this->renderCallback, [$item['resource']], null);
             // switch element
             if ($this->multiSelect) {
-                $element = $form->addMultiSelect($item['id']);
+                $element = $form->addMultiSelect($item['id'], $label);
             } else {
-                $element = $form->addCheckboxList($item['id']);
+                $element = $form->addCheckboxList($item['id'], $label);
             }
             $element->setItems($items)->setTranslator(null);
         }
-        $form->addGroup();
 
         $form->addSubmit('save', 'acl-aclform-save');
     }

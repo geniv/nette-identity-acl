@@ -10,6 +10,5 @@ acl-privilegeform-privilege: oprávnění
 acl-privilegeform-role-required: toto pole je povinné
 acl-privilegeform-save: uložit
 
-acl-aclform-group-all: ALL
 acl-aclform-all: vše
 acl-aclform-save: uložit
