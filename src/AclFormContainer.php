@@ -24,7 +24,7 @@ class AclFormContainer implements IFormContainer
     /** @var callable */
     protected $renderCallback;
     /** @var bool */
-    private $multiSelect;
+    protected $multiSelect;
 
 
     /**
