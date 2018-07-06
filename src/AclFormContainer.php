@@ -5,6 +5,7 @@ namespace Identity\Acl;
 use GeneralForm\IFormContainer;
 use Identity\Authorizator\IIdentityAuthorizator;
 use Nette\Application\UI\Form;
+use Nette\SmartObject;
 use Nette\Utils\Callback;
 
 
@@ -16,12 +17,14 @@ use Nette\Utils\Callback;
  */
 class AclFormContainer implements IFormContainer
 {
+    use SmartObject;
+
     /** @var IIdentityAuthorizator */
     protected $identityAuthorizator;
     /** @var callable */
     protected $renderCallback;
     /** @var bool */
-    private $multiSelect;
+    protected $multiSelect;
 
 
     /**

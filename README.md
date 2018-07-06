@@ -34,6 +34,10 @@ identityAcl:
 #    aclFormContainer: Identity\Acl\AclFormContainer
 ```
 
+if you want to by redefine `aclFormContainer` then you must use extends, eg.: 
+`class UserAclFormContainer extends AclFormContainer` and redefine only method: `public function getForm(Form $form)`.
+If you use all content of class `AclFormContainer` will be not function!
+
 neon configure extension:
 ```neon
 extensions:
