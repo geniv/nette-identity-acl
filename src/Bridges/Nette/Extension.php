@@ -3,13 +3,13 @@
 namespace Identity\Acl\Bridges\Nette;
 
 use GeneralForm\GeneralForm;
-use Identity\Acl\AclForm;
+use Identity\Acl\AclComponent;
 use Identity\Acl\AclFormContainer;
-use Identity\Acl\PrivilegeForm;
+use Identity\Acl\PrivilegeComponent;
 use Identity\Acl\PrivilegeFormContainer;
-use Identity\Acl\ResourceForm;
+use Identity\Acl\ResourceComponent;
 use Identity\Acl\ResourceFormContainer;
-use Identity\Acl\RoleForm;
+use Identity\Acl\RoleComponent;
 use Identity\Acl\RoleFormContainer;
 use Nette\DI\CompilerExtension;
 
@@ -47,22 +47,22 @@ class Extension extends CompilerExtension
 
         // define role form
         $builder->addDefinition($this->prefix('role'))
-            ->setFactory(RoleForm::class, [$roleFormContainer])
+            ->setFactory(RoleComponent::class, [$roleFormContainer])
             ->setAutowired($config['autowired']);
 
         // define resource form
         $builder->addDefinition($this->prefix('resource'))
-            ->setFactory(ResourceForm::class, [$resourceFormContainer])
+            ->setFactory(ResourceComponent::class, [$resourceFormContainer])
             ->setAutowired($config['autowired']);
 
         // define privilege form
         $builder->addDefinition($this->prefix('privilege'))
-            ->setFactory(PrivilegeForm::class, [$privilegeFormContainer])
+            ->setFactory(PrivilegeComponent::class, [$privilegeFormContainer])
             ->setAutowired($config['autowired']);
 
         // define acl form
         $builder->addDefinition($this->prefix('acl'))
-            ->setFactory(AclForm::class, [$aclFormContainer])
+            ->setFactory(AclComponent::class, [$aclFormContainer])
             ->setAutowired($config['autowired']);
     }
 }

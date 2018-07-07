@@ -4,7 +4,6 @@ namespace Identity\Acl;
 
 use GeneralForm\IFormContainer;
 use GeneralForm\ITemplatePath;
-use Identity\Authorizator\Drivers\UniqueConstraintViolationException;
 use Identity\Authorizator\IIdentityAuthorizator;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;
@@ -12,12 +11,12 @@ use Nette\Localization\ITranslator;
 
 
 /**
- * Class PrivilegeForm
+ * Class AclComponent
  *
  * @author  geniv
  * @package Identity\Acl
  */
-class PrivilegeForm extends Control implements ITemplatePath
+class AclComponent extends Control implements ITemplatePath
 {
     /** @var IFormContainer */
     private $formContainer;
@@ -25,18 +24,16 @@ class PrivilegeForm extends Control implements ITemplatePath
     private $identityAuthorizator;
     /** @var ITranslator|null */
     private $translator;
-    /** @var string template path */
-    private $templatePath;
     /** @var string */
-    private $state = null;
+    private $templatePath;
+    /** @var int */
+    private $idRole = null;
     /** @var callback method */
     public $onSuccess, $onError;
-    /** @var callable */
-    private $renderCallback;
 
 
     /**
-     * PrivilegeForm constructor.
+     * AclComponent constructor.
      *
      * @param IFormContainer        $formContainer
      * @param IIdentityAuthorizator $identityAuthorizator
@@ -50,8 +47,7 @@ class PrivilegeForm extends Control implements ITemplatePath
         $this->identityAuthorizator = $identityAuthorizator;
         $this->translator = $translator;
 
-        $this->templatePath = __DIR__ . '/PrivilegeForm.latte';  // default path
-        $this->renderCallback = function ($data) { return $data; };
+        $this->templatePath = __DIR__ . '/AclForm.latte';  // default path
     }
 
 
@@ -67,17 +63,6 @@ class PrivilegeForm extends Control implements ITemplatePath
 
 
     /**
-     * Set render callback.
-     *
-     * @param callable $callback
-     */
-    public function setRenderCallback(callable $callback)
-    {
-        $this->renderCallback = $callback;
-    }
-
-
-    /**
      * Create component form.
      *
      * @param string $name
@@ -88,28 +73,20 @@ class PrivilegeForm extends Control implements ITemplatePath
         $form = new Form($this, $name);
         $form->setTranslator($this->translator);
 
-        $form->addHidden('id');
+        $form->addHidden('idRole');
         $this->formContainer->getForm($form);
 
         $form->onSuccess[] = function (Form $form, array $values) {
-            try {
-                if ($this->identityAuthorizator->savePrivilege($values) >= 0) {
-                    $this->onSuccess($values);
-                }
-            } catch (UniqueConstraintViolationException $e) {
-                $this->onError($values, $e);
+            $idRole = $values['idRole'];
+            unset($values['idRole']);
+
+            if ($this->identityAuthorizator->saveAcl($idRole, $values)) {
+                $this->onSuccess($values);
+            } else {
+                $this->onError($values);
             }
         };
         return $form;
-    }
-
-
-    /**
-     * Handle add.
-     */
-    public function handleAdd()
-    {
-        $this->state = 'add';
     }
 
 
@@ -120,43 +97,37 @@ class PrivilegeForm extends Control implements ITemplatePath
      */
     public function handleUpdate(string $id)
     {
-        $this->state = 'update';
+        $this->idRole = $id;
 
-        $privilege = $this->identityAuthorizator->getPrivilege($id);
-        if ($privilege) {
-            $this['form']->setDefaults($privilege);
-        }
-    }
+        $defaultItems = [];
+        foreach ($this->identityAuthorizator->getResource() as $item) {
+            $acl = $this->identityAuthorizator->getAcl($id, (string) $item['id']);
 
-
-    /**
-     * Handle delete.
-     *
-     * @param string $id
-     */
-    public function handleDelete(string $id)
-    {
-        $privilege = $this->identityAuthorizator->getPrivilege($id);
-        if ($privilege) {
-            if ($this->identityAuthorizator->savePrivilege(['id' => $id])) {
-                $this->onSuccess($privilege);
+            if ($this->identityAuthorizator->isAll($id, (string) $item['id'])) {
+                // idRole, idResource, ALL
+                $defaultItems[$item['id']] = 'all';
             } else {
-                $this->onError($privilege);
+                $defaultItems[$item['id']] = array_values(array_map(function ($row) { return $row['id_privilege']; }, $acl));
             }
         }
+
+        if ($this->identityAuthorizator->isAll($id)) {
+            // idRole, ALL, ALL
+            $defaultItems['all'] = true;
+        }
+        $this['form']->setDefaults(['idRole' => $id] + $defaultItems);
     }
 
 
     /**
-     * Render privilege.
+     * Render.
      */
     public function render()
     {
         $template = $this->getTemplate();
 
-        $template->state = $this->state;
-        $template->privilege = $this->identityAuthorizator->getPrivilege();
-        $template->getValue = $this->renderCallback;
+        $template->role = $this->identityAuthorizator->getRole();
+        $template->idRole = $this->idRole;
 
         $template->setTranslator($this->translator);
         $template->setFile($this->templatePath);
