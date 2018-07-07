@@ -12,12 +12,12 @@ use Nette\Localization\ITranslator;
 
 
 /**
- * Class RoleForm
+ * Class ResourceComponent
  *
  * @author  geniv
  * @package Identity\Acl
  */
-class RoleForm extends Control implements ITemplatePath
+class ResourceComponent extends Control implements ITemplatePath
 {
     /** @var IFormContainer */
     private $formContainer;
@@ -29,14 +29,14 @@ class RoleForm extends Control implements ITemplatePath
     private $templatePath;
     /** @var string */
     private $state = null;
-    /** @var callback */
+    /** @var callback method */
     public $onSuccess, $onError;
     /** @var callable */
     private $renderCallback;
 
 
     /**
-     * RoleForm constructor.
+     * ResourceComponent constructor.
      *
      * @param IFormContainer        $formContainer
      * @param IIdentityAuthorizator $identityAuthorizator
@@ -50,7 +50,7 @@ class RoleForm extends Control implements ITemplatePath
         $this->identityAuthorizator = $identityAuthorizator;
         $this->translator = $translator;
 
-        $this->templatePath = __DIR__ . '/RoleForm.latte';  // default path
+        $this->templatePath = __DIR__ . '/ResourceForm.latte';  // default path
         $this->renderCallback = function ($data) { return $data; };
     }
 
@@ -93,7 +93,7 @@ class RoleForm extends Control implements ITemplatePath
 
         $form->onSuccess[] = function (Form $form, array $values) {
             try {
-                if ($this->identityAuthorizator->saveRole($values) >= 0) {
+                if ($this->identityAuthorizator->saveResource($values) >= 0) {
                     $this->onSuccess($values);
                 }
             } catch (UniqueConstraintViolationException $e) {
@@ -122,9 +122,9 @@ class RoleForm extends Control implements ITemplatePath
     {
         $this->state = 'update';
 
-        $role = $this->identityAuthorizator->getRole($id);
-        if ($role) {
-            $this['form']->setDefaults($role);
+        $resource = $this->identityAuthorizator->getResource($id);
+        if ($resource) {
+            $this['form']->setDefaults($resource);
         }
     }
 
@@ -136,26 +136,26 @@ class RoleForm extends Control implements ITemplatePath
      */
     public function handleDelete(string $id)
     {
-        $role = $this->identityAuthorizator->getRole($id);
-        if ($role) {
-            if ($this->identityAuthorizator->saveRole(['id' => $id])) {
-                $this->onSuccess($role);
+        $resource = $this->identityAuthorizator->getResource($id);
+        if ($resource) {
+            if ($this->identityAuthorizator->saveResource(['id' => $id])) {
+                $this->onSuccess($resource);
             } else {
-                $this->onError($role);
+                $this->onError($resource);
             }
         }
     }
 
 
     /**
-     * Render role.
+     * Render resource.
      */
     public function render()
     {
         $template = $this->getTemplate();
 
         $template->state = $this->state;
-        $template->role = $this->identityAuthorizator->getRole();
+        $template->resource = $this->identityAuthorizator->getResource();
         $template->getValue = $this->renderCallback;
 
         $template->setTranslator($this->translator);

@@ -12,12 +12,12 @@ use Nette\Localization\ITranslator;
 
 
 /**
- * Class ResourceForm
+ * Class PrivilegeComponent
  *
  * @author  geniv
  * @package Identity\Acl
  */
-class ResourceForm extends Control implements ITemplatePath
+class PrivilegeComponent extends Control implements ITemplatePath
 {
     /** @var IFormContainer */
     private $formContainer;
@@ -25,7 +25,7 @@ class ResourceForm extends Control implements ITemplatePath
     private $identityAuthorizator;
     /** @var ITranslator|null */
     private $translator;
-    /** @var string */
+    /** @var string template path */
     private $templatePath;
     /** @var string */
     private $state = null;
@@ -36,7 +36,7 @@ class ResourceForm extends Control implements ITemplatePath
 
 
     /**
-     * ResourceForm constructor.
+     * PrivilegeComponent constructor.
      *
      * @param IFormContainer        $formContainer
      * @param IIdentityAuthorizator $identityAuthorizator
@@ -50,7 +50,7 @@ class ResourceForm extends Control implements ITemplatePath
         $this->identityAuthorizator = $identityAuthorizator;
         $this->translator = $translator;
 
-        $this->templatePath = __DIR__ . '/ResourceForm.latte';  // default path
+        $this->templatePath = __DIR__ . '/PrivilegeForm.latte';  // default path
         $this->renderCallback = function ($data) { return $data; };
     }
 
@@ -93,7 +93,7 @@ class ResourceForm extends Control implements ITemplatePath
 
         $form->onSuccess[] = function (Form $form, array $values) {
             try {
-                if ($this->identityAuthorizator->saveResource($values) >= 0) {
+                if ($this->identityAuthorizator->savePrivilege($values) >= 0) {
                     $this->onSuccess($values);
                 }
             } catch (UniqueConstraintViolationException $e) {
@@ -122,9 +122,9 @@ class ResourceForm extends Control implements ITemplatePath
     {
         $this->state = 'update';
 
-        $resource = $this->identityAuthorizator->getResource($id);
-        if ($resource) {
-            $this['form']->setDefaults($resource);
+        $privilege = $this->identityAuthorizator->getPrivilege($id);
+        if ($privilege) {
+            $this['form']->setDefaults($privilege);
         }
     }
 
@@ -136,26 +136,26 @@ class ResourceForm extends Control implements ITemplatePath
      */
     public function handleDelete(string $id)
     {
-        $resource = $this->identityAuthorizator->getResource($id);
-        if ($resource) {
-            if ($this->identityAuthorizator->saveResource(['id' => $id])) {
-                $this->onSuccess($resource);
+        $privilege = $this->identityAuthorizator->getPrivilege($id);
+        if ($privilege) {
+            if ($this->identityAuthorizator->savePrivilege(['id' => $id])) {
+                $this->onSuccess($privilege);
             } else {
-                $this->onError($resource);
+                $this->onError($privilege);
             }
         }
     }
 
 
     /**
-     * Render resource.
+     * Render privilege.
      */
     public function render()
     {
         $template = $this->getTemplate();
 
         $template->state = $this->state;
-        $template->resource = $this->identityAuthorizator->getResource();
+        $template->privilege = $this->identityAuthorizator->getPrivilege();
         $template->getValue = $this->renderCallback;
 
         $template->setTranslator($this->translator);

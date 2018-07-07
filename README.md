@@ -46,51 +46,51 @@ extensions:
 
 presenters:
 ```php
-protected function createComponentRoleForm(RoleForm $roleForm): RoleForm
+protected function createComponentRoleComponent(RoleComponent $roleComponent): RoleComponent
 {
-    //$roleForm->setRenderCallback(function ($data) { return $data; });
-    //$roleForm->setTemplatePath(path);
-    //$roleForm->onSuccess[] = function (array $values) { };
-    //$roleForm->onError[] = function (array $values, Exception $e = null) { };
-    return $roleForm;
+    //$roleComponent->setRenderCallback(function ($data) { return $data; });
+    //$roleComponent->setTemplatePath(path);
+    //$roleComponent->onSuccess[] = function (array $values) { };
+    //$roleComponent->onError[] = function (array $values, Exception $e = null) { };
+    return $roleComponent;
 }
 
 
-protected function createComponentResourceForm(ResourceForm $resourceForm): ResourceForm
+protected function createComponentResourceComponent(ResourceComponent $resourceComponent): ResourceComponent
 {
-    //$resourceForm->setRenderCallback(function ($data) { return $data; });
-    //$resourceForm->setTemplatePath(path);
-    //$resourceForm->onSuccess[] = function (array $values) { };
-    //$resourceForm->onError[] = function (array $values, Exception $e = null) { };
-    return $resourceForm;
+    //$resourceComponent->setRenderCallback(function ($data) { return $data; });
+    //$resourceComponent->setTemplatePath(path);
+    //$resourceComponent->onSuccess[] = function (array $values) { };
+    //$resourceComponent->onError[] = function (array $values, Exception $e = null) { };
+    return $resourceComponent;
 }
 
 
-protected function createComponentPrivilegeForm(PrivilegeForm $privilegeForm): PrivilegeForm
+protected function createComponentPrivilegeComponent(PrivilegeComponent $privilegeComponent): PrivilegeComponent
 {
-    //$privilegeForm->setRenderCallback(function ($data) { return $data; });
-    //$privilegeForm->setTemplatePath(path);
-    //$privilegeForm->onSuccess[] = function (array $values) { };
-    //$privilegeForm->onError[] = function (array $values, Exception $e = null) { };
-    return $privilegeForm;
+    //$privilegeComponent->setRenderCallback(function ($data) { return $data; });
+    //$privilegeComponent->setTemplatePath(path);
+    //$privilegeComponent->onSuccess[] = function (array $values) { };
+    //$privilegeComponent->onError[] = function (array $values, Exception $e = null) { };
+    return $privilegeComponent;
 }
 
 
-protected function createComponentAclForm(AclForm $aclForm, AclFormContainer $aclFormContainer): AclForm
+protected function createComponentAclForm(AclForm $aclComponent, AclFormContainer $aclFormContainer): AclForm
 {
     //$aclFormContainer->setRenderCallback(function ($data) { return $data; });
     //$aclFormContainer->setMultiSelect(true);
-    //$aclForm->setTemplatePath(path);
-    //$aclForm->onSuccess[] = function (array $values) { };
-    //$aclForm->onError[] = function (array $values) { };
-    return $aclForm;
+    //$aclComponent->setTemplatePath(path);
+    //$aclComponent->onSuccess[] = function (array $values) { };
+    //$aclComponent->onError[] = function (array $values) { };
+    return $aclComponent;
 }
 ```
 
 usage:
 ```latte
-{control roleForm}
-{control resourceForm}
-{control privilegeForm}
-{control aclForm}
+{control roleComponent}
+{control resourceComponent}
+{control privilegeComponent}
+{control aclComponent}
 ```
