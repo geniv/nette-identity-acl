@@ -46,13 +46,12 @@ extensions:
 
 presenters:
 ```php
-protected function createComponentRoleComponent(RoleComponent $roleComponent): RoleComponent
+protected function createComponentRoleForm(RoleForm $roleForm): RoleForm
 {
-    //$roleComponent->setRenderCallback(function ($data) { return $data; });
-    //$roleComponent->setTemplatePath(path);
-    //$roleComponent->onSuccess[] = function (array $values) { };
-    //$roleComponent->onError[] = function (array $values, Exception $e = null) { };
-    return $roleComponent;
+    //$roleForm->setTemplatePath(path);
+    //$roleForm->onSuccess[] = function (Form $form, array $values) { };
+    //$roleForm->onError[] = function (Form $form) { };
+    return $roleForm;
 }
 
 

@@ -81,8 +81,8 @@ class RoleForm extends Control implements ITemplatePath
         $form->addHidden('id');
         $this->formContainer->getForm($form);
 
-        $form->onSuccess[] = $this->onSuccess;
-        $form->onError[] = $this->onError;
+        $form->onSuccess = $this->onSuccess;
+        $form->onError = $this->onError;
         return $form;
     }
 }
