@@ -55,13 +55,12 @@ protected function createComponentRoleForm(RoleForm $roleForm): RoleForm
 }
 
 
-protected function createComponentResourceComponent(ResourceComponent $resourceComponent): ResourceComponent
+protected function createComponentResourceForm(ResourceForm $resourceForm): ResourceForm
 {
-    //$resourceComponent->setRenderCallback(function ($data) { return $data; });
-    //$resourceComponent->setTemplatePath(path);
-    //$resourceComponent->onSuccess[] = function (array $values) { };
-    //$resourceComponent->onError[] = function (array $values, Exception $e = null) { };
-    return $resourceComponent;
+    //$resourceForm->setTemplatePath(path);
+    //$resourceForm->onSuccess[] = function (Form $form, array $values) { };
+    //$resourceForm->onError[] = function (Form $form) { };
+    return $resourceForm;
 }
 
 

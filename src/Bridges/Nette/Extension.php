@@ -7,7 +7,7 @@ use Identity\Acl\AclComponent;
 use Identity\Acl\AclFormContainer;
 use Identity\Acl\PrivilegeComponent;
 use Identity\Acl\PrivilegeFormContainer;
-use Identity\Acl\ResourceComponent;
+use Identity\Acl\ResourceForm;
 use Identity\Acl\ResourceFormContainer;
 use Identity\Acl\RoleForm;
 use Identity\Acl\RoleFormContainer;
@@ -52,7 +52,7 @@ class Extension extends CompilerExtension
 
         // define resource form
         $builder->addDefinition($this->prefix('resource'))
-            ->setFactory(ResourceComponent::class, [$resourceFormContainer])
+            ->setFactory(ResourceForm::class, [$resourceFormContainer])
             ->setAutowired($config['autowired']);
 
         // define privilege form
