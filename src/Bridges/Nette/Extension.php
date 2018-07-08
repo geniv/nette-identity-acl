@@ -9,7 +9,7 @@ use Identity\Acl\PrivilegeComponent;
 use Identity\Acl\PrivilegeFormContainer;
 use Identity\Acl\ResourceComponent;
 use Identity\Acl\ResourceFormContainer;
-use Identity\Acl\RoleComponent;
+use Identity\Acl\RoleForm;
 use Identity\Acl\RoleFormContainer;
 use Nette\DI\CompilerExtension;
 
@@ -47,7 +47,7 @@ class Extension extends CompilerExtension
 
         // define role form
         $builder->addDefinition($this->prefix('role'))
-            ->setFactory(RoleComponent::class, [$roleFormContainer])
+            ->setFactory(RoleForm::class, [$roleFormContainer])
             ->setAutowired($config['autowired']);
 
         // define resource form

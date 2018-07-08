@@ -4,20 +4,18 @@ namespace Identity\Acl;
 
 use GeneralForm\IFormContainer;
 use GeneralForm\ITemplatePath;
-use Identity\Authorizator\Drivers\UniqueConstraintViolationException;
-use Identity\Authorizator\IIdentityAuthorizator;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;
 use Nette\Localization\ITranslator;
 
 
 /**
- * Class RoleComponent
+ * Class RoleForm
  *
  * @author  geniv
  * @package Identity\Acl
  */
-class RoleComponent extends Control implements ITemplatePath
+class RoleForm extends Control implements ITemplatePath
 {
     /** @var IFormContainer */
     private $formContainer;
@@ -30,7 +28,7 @@ class RoleComponent extends Control implements ITemplatePath
 
 
     /**
-     * RoleComponent constructor.
+     * RoleForm constructor.
      *
      * @param IFormContainer   $formContainer
      * @param ITranslator|null $translator
