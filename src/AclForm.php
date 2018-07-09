@@ -11,7 +11,7 @@ use Nette\Localization\ITranslator;
 
 
 /**
- * Class AclComponent
+ * Class AclForm
  *
  * @author  geniv
  * @package Identity\Acl
@@ -26,14 +26,12 @@ class AclForm extends Control implements ITemplatePath
     private $translator;
     /** @var string */
     private $templatePath;
-    /** @var int */
-    private $idRole = null;
     /** @var callback method */
     public $onSuccess, $onError;
 
 
     /**
-     * AclComponent constructor.
+     * AclForm constructor.
      *
      * @param IFormContainer        $formContainer
      * @param IIdentityAuthorizator $identityAuthorizator
@@ -63,6 +61,63 @@ class AclForm extends Control implements ITemplatePath
 
 
     /**
+     * Save acl.
+     *
+     * @param array $values
+     * @return int
+     */
+    public function saveAcl(array $values): int
+    {
+        // support method
+        $idRole = $values['idRole'];
+        unset($values['idRole']);
+        return $this->identityAuthorizator->saveAcl($idRole, $values);
+    }
+
+
+    /**
+     * Get defaults.
+     *
+     * @param string $id
+     * @return array
+     */
+    public function getDefaults(string $id): array
+    {
+        // support method
+        $result = [];
+        foreach ($this->identityAuthorizator->getResource() as $item) {
+            $acl = $this->identityAuthorizator->getAcl($id, (string) $item['id']);
+
+            if ($this->identityAuthorizator->isAll($id, (string) $item['id'])) {
+                // idRole, idResource, ALL
+                $result[$item['id']] = 'all';
+            } else {
+                $result[$item['id']] = array_values(array_map(function ($row) { return $row['id_privilege']; }, $acl));
+            }
+        }
+
+        if ($this->identityAuthorizator->isAll($id)) {
+            // idRole, ALL, ALL
+            $result['all'] = true;
+        }
+        return ['idRole' => $id] + $result;
+    }
+
+
+    /**
+     * Render.
+     */
+    public function render()
+    {
+        $template = $this->getTemplate();
+
+        $template->setTranslator($this->translator);
+        $template->setFile($this->templatePath);
+        $template->render();
+    }
+
+
+    /**
      * Create component form.
      *
      * @param string $name
@@ -76,61 +131,8 @@ class AclForm extends Control implements ITemplatePath
         $form->addHidden('idRole');
         $this->formContainer->getForm($form);
 
-        $form->onSuccess[] = function (Form $form, array $values) {
-            $idRole = $values['idRole'];
-            unset($values['idRole']);
-
-            if ($this->identityAuthorizator->saveAcl($idRole, $values)) {
-                $this->onSuccess($values);
-            } else {
-                $this->onError($values);
-            }
-        };
+        $form->onSuccess = $this->onSuccess;
+        $form->onError = $this->onError;
         return $form;
-    }
-
-
-    /**
-     * Handle update.
-     *
-     * @param string $id
-     */
-    public function handleUpdate(string $id)
-    {
-        $this->idRole = $id;
-
-        $defaultItems = [];
-        foreach ($this->identityAuthorizator->getResource() as $item) {
-            $acl = $this->identityAuthorizator->getAcl($id, (string) $item['id']);
-
-            if ($this->identityAuthorizator->isAll($id, (string) $item['id'])) {
-                // idRole, idResource, ALL
-                $defaultItems[$item['id']] = 'all';
-            } else {
-                $defaultItems[$item['id']] = array_values(array_map(function ($row) { return $row['id_privilege']; }, $acl));
-            }
-        }
-
-        if ($this->identityAuthorizator->isAll($id)) {
-            // idRole, ALL, ALL
-            $defaultItems['all'] = true;
-        }
-        $this['form']->setDefaults(['idRole' => $id] + $defaultItems);
-    }
-
-
-    /**
-     * Render.
-     */
-    public function render()
-    {
-        $template = $this->getTemplate();
-
-        $template->role = $this->identityAuthorizator->getRole();
-        $template->idRole = $this->idRole;
-
-        $template->setTranslator($this->translator);
-        $template->setFile($this->templatePath);
-        $template->render();
     }
 }
