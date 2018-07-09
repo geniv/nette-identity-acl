@@ -44,53 +44,58 @@ extensions:
     identityAcl: Identity\Acl\Bridges\Nette\Extension
 ```
 
+**WARNING**: rename `role`, `resource` and `privilege` maybe given error in section ACL for NEON driver, 
+because NEON ID are not linked to self.
+DIBI driver with relationships are OK.
+
 presenters:
 ```php
-protected function createComponentRoleComponent(RoleComponent $roleComponent): RoleComponent
+protected function createComponentRoleForm(RoleForm $roleForm): RoleForm
 {
-    //$roleComponent->setRenderCallback(function ($data) { return $data; });
-    //$roleComponent->setTemplatePath(path);
-    //$roleComponent->onSuccess[] = function (array $values) { };
-    //$roleComponent->onError[] = function (array $values, Exception $e = null) { };
-    return $roleComponent;
+    //$roleForm->setTemplatePath(path);
+    //$roleForm->onSuccess[] = function (Form $form, array $values) { };
+    //$roleForm->onError[] = function (Form $form) { };
+    return $roleForm;
 }
 
 
-protected function createComponentResourceComponent(ResourceComponent $resourceComponent): ResourceComponent
+protected function createComponentResourceForm(ResourceForm $resourceForm): ResourceForm
 {
-    //$resourceComponent->setRenderCallback(function ($data) { return $data; });
-    //$resourceComponent->setTemplatePath(path);
-    //$resourceComponent->onSuccess[] = function (array $values) { };
-    //$resourceComponent->onError[] = function (array $values, Exception $e = null) { };
-    return $resourceComponent;
+    //$resourceForm->setTemplatePath(path);
+    //$resourceForm->onSuccess[] = function (Form $form, array $values) { };
+    //$resourceForm->onError[] = function (Form $form) { };
+    return $resourceForm;
 }
 
 
-protected function createComponentPrivilegeComponent(PrivilegeComponent $privilegeComponent): PrivilegeComponent
+protected function createComponentPrivilegeForm(PrivilegeForm $privilegeForm): PrivilegeForm
 {
-    //$privilegeComponent->setRenderCallback(function ($data) { return $data; });
-    //$privilegeComponent->setTemplatePath(path);
-    //$privilegeComponent->onSuccess[] = function (array $values) { };
-    //$privilegeComponent->onError[] = function (array $values, Exception $e = null) { };
-    return $privilegeComponent;
+    //$privilegeForm->setRenderCallback(function ($data) { return $data; });
+    //$privilegeForm->setTemplatePath(path);
+    //$privilegeForm->onSuccess[] = function (Form $form, array $values) { };
+    //$privilegeForm->onError[] = function (Form $form) { };
+    return $privilegeForm;
 }
 
 
-protected function createComponentAclForm(AclForm $aclComponent, AclFormContainer $aclFormContainer): AclForm
+protected function createComponentAclForm(AclForm $aclForm, AclFormContainer $aclFormContainer): AclForm
 {
     //$aclFormContainer->setRenderCallback(function ($data) { return $data; });
     //$aclFormContainer->setMultiSelect(true);
-    //$aclComponent->setTemplatePath(path);
-    //$aclComponent->onSuccess[] = function (array $values) { };
-    //$aclComponent->onError[] = function (array $values) { };
-    return $aclComponent;
+
+//    $this['aclForm']['form']->setDefaults($this['aclForm']->getDefaults($id));
+
+    //$aclForm->setTemplatePath(path);
+    //$aclForm->onSuccess[] = function (Form $form, array $values) use ($aclForm) { $aclForm->saveAcl(array $values) };
+    //$aclForm->onError[] = function (Form $form) { };
+    return $aclForm;
 }
 ```
 
 usage:
 ```latte
-{control roleComponent}
-{control resourceComponent}
-{control privilegeComponent}
-{control aclComponent}
+{control roleForm}
+{control resourceForm}
+{control privilegeForm}
+{control aclForm}
 ```

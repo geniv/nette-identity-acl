@@ -1,17 +1,1 @@
-<br>
-resource<br>
-<br>
-
-{if $state=='add' || $state=='update'}
-    <a n:href="this">back</a>
-    <br>
-    {control form}
-{else}
-    <a n:href="Add!">add resource</a><br>
-    list:<br>
-    {foreach $resource as $item}
-        {$getValue($item['resource'])}
-        <a n:href="Update! $item['id']">update</a>
-        <a onclick="return confirm('Delete {$item['resource']}?')" n:href="Delete! $item['id']">delete</a><br>
-    {/foreach}
-{/if}
+{control form}
