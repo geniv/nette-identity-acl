@@ -44,6 +44,10 @@ extensions:
     identityAcl: Identity\Acl\Bridges\Nette\Extension
 ```
 
+**WARNING**: rename `role`, `resource` and `privilege` maybe given error in section ACL for NEON driver, 
+because NEON ID are not linked to self.
+DIBI driver with relationships are OK.
+
 presenters:
 ```php
 protected function createComponentRoleForm(RoleForm $roleForm): RoleForm
@@ -78,9 +82,9 @@ protected function createComponentAclForm(AclForm $aclForm, AclFormContainer $ac
 {
     //$aclFormContainer->setRenderCallback(function ($data) { return $data; });
     //$aclFormContainer->setMultiSelect(true);
-    
+
 //    $this['aclForm']['form']->setDefaults($this['aclForm']->getDefaults($id));
-    
+
     //$aclForm->setTemplatePath(path);
     //$aclForm->onSuccess[] = function (Form $form, array $values) use ($aclForm) { $aclForm->saveAcl(array $values) };
     //$aclForm->onError[] = function (Form $form) { };

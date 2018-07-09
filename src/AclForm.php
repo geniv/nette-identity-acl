@@ -61,21 +61,6 @@ class AclForm extends Control implements ITemplatePath
 
 
     /**
-     * Save acl.
-     *
-     * @param array $values
-     * @return int
-     */
-    public function saveAcl(array $values): int
-    {
-        // support method
-        $idRole = $values['idRole'];
-        unset($values['idRole']);
-        return $this->identityAuthorizator->saveAcl($idRole, $values);
-    }
-
-
-    /**
      * Get defaults.
      *
      * @param string $id
@@ -83,7 +68,7 @@ class AclForm extends Control implements ITemplatePath
      */
     public function getDefaults(string $id): array
     {
-        // support method
+        // support method - for load form
         $result = [];
         foreach ($this->identityAuthorizator->getResource() as $item) {
             $acl = $this->identityAuthorizator->getAcl($id, (string) $item['id']);
@@ -101,6 +86,21 @@ class AclForm extends Control implements ITemplatePath
             $result['all'] = true;
         }
         return ['idRole' => $id] + $result;
+    }
+
+
+    /**
+     * Save acl.
+     *
+     * @param array $values
+     * @return int
+     */
+    public function saveAcl(array $values): int
+    {
+        // support method - for save data
+        $idRole = $values['idRole'];
+        unset($values['idRole']);
+        return $this->identityAuthorizator->saveAcl($idRole, $values);
     }
 
 
