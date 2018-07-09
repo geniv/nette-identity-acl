@@ -16,7 +16,7 @@ use Nette\Localization\ITranslator;
  * @author  geniv
  * @package Identity\Acl
  */
-class AclComponent extends Control implements ITemplatePath
+class AclForm extends Control implements ITemplatePath
 {
     /** @var IFormContainer */
     private $formContainer;

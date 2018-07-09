@@ -3,7 +3,7 @@
 namespace Identity\Acl\Bridges\Nette;
 
 use GeneralForm\GeneralForm;
-use Identity\Acl\AclComponent;
+use Identity\Acl\AclForm;
 use Identity\Acl\AclFormContainer;
 use Identity\Acl\PrivilegeForm;
 use Identity\Acl\PrivilegeFormContainer;
@@ -62,7 +62,7 @@ class Extension extends CompilerExtension
 
         // define acl form
         $builder->addDefinition($this->prefix('acl'))
-            ->setFactory(AclComponent::class, [$aclFormContainer])
+            ->setFactory(AclForm::class, [$aclFormContainer])
             ->setAutowired($config['autowired']);
     }
 }
