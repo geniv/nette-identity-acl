@@ -64,31 +64,34 @@ protected function createComponentResourceForm(ResourceForm $resourceForm): Reso
 }
 
 
-protected function createComponentPrivilegeComponent(PrivilegeComponent $privilegeComponent): PrivilegeComponent
+protected function createComponentPrivilegeForm(PrivilegeForm $privilegeForm): PrivilegeForm
 {
-    //$privilegeComponent->setRenderCallback(function ($data) { return $data; });
-    //$privilegeComponent->setTemplatePath(path);
-    //$privilegeComponent->onSuccess[] = function (array $values) { };
-    //$privilegeComponent->onError[] = function (array $values, Exception $e = null) { };
-    return $privilegeComponent;
+    //$privilegeForm->setRenderCallback(function ($data) { return $data; });
+    //$privilegeForm->setTemplatePath(path);
+    //$privilegeForm->onSuccess[] = function (Form $form, array $values) { };
+    //$privilegeForm->onError[] = function (Form $form) { };
+    return $privilegeForm;
 }
 
 
-protected function createComponentAclForm(AclForm $aclComponent, AclFormContainer $aclFormContainer): AclForm
+protected function createComponentAclForm(AclForm $aclForm, AclFormContainer $aclFormContainer): AclForm
 {
     //$aclFormContainer->setRenderCallback(function ($data) { return $data; });
     //$aclFormContainer->setMultiSelect(true);
-    //$aclComponent->setTemplatePath(path);
-    //$aclComponent->onSuccess[] = function (array $values) { };
-    //$aclComponent->onError[] = function (array $values) { };
-    return $aclComponent;
+    
+//    $this['aclForm']['form']->setDefaults($this['aclForm']->getDefaults($id));
+    
+    //$aclForm->setTemplatePath(path);
+    //$aclForm->onSuccess[] = function (Form $form, array $values) use ($aclForm) { $aclForm->saveAcl(array $values) };
+    //$aclForm->onError[] = function (Form $form) { };
+    return $aclForm;
 }
 ```
 
 usage:
 ```latte
-{control roleComponent}
-{control resourceComponent}
-{control privilegeComponent}
-{control aclComponent}
+{control roleForm}
+{control resourceForm}
+{control privilegeForm}
+{control aclForm}
 ```
