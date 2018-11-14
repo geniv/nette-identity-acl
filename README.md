@@ -70,7 +70,6 @@ protected function createComponentResourceForm(ResourceForm $resourceForm): Reso
 
 protected function createComponentPrivilegeForm(PrivilegeForm $privilegeForm): PrivilegeForm
 {
-    //$privilegeForm->setRenderCallback(function ($data) { return $data; });
     //$privilegeForm->setTemplatePath(path);
     //$privilegeForm->onSuccess[] = function (Form $form, array $values) { };
     //$privilegeForm->onError[] = function (Form $form) { };
@@ -80,7 +79,7 @@ protected function createComponentPrivilegeForm(PrivilegeForm $privilegeForm): P
 
 protected function createComponentAclForm(AclForm $aclForm, AclFormContainer $aclFormContainer): AclForm
 {
-    //$aclFormContainer->setRenderCallback(function ($data) { return $data; });
+    //$aclFormContainer->onRender = function ($data) { return $data; };
     //$aclFormContainer->setMultiSelect(true);
 
 //    $this['aclForm']['form']->setDefaults($this['aclForm']->getDefaults($id));

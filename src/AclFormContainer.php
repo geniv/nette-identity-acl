@@ -22,7 +22,7 @@ class AclFormContainer implements IFormContainer
     /** @var IIdentityAuthorizator */
     protected $identityAuthorizator;
     /** @var callable */
-    protected $renderCallback;
+    public $onRender;
     /** @var bool */
     protected $multiSelect;
 
@@ -35,18 +35,7 @@ class AclFormContainer implements IFormContainer
     public function __construct(IIdentityAuthorizator $identityAuthorizator)
     {
         $this->identityAuthorizator = $identityAuthorizator;
-        $this->renderCallback = function ($data) { return $data; };
-    }
-
-
-    /**
-     * Set render callback.
-     *
-     * @param callable $callback
-     */
-    public function setRenderCallback(callable $callback)
-    {
-        $this->renderCallback = $callback;
+        $this->onRender = function ($data) { return $data; };
     }
 
 
@@ -84,7 +73,7 @@ class AclFormContainer implements IFormContainer
                 $items['all'] = 'all';  // add all
             }
 
-            $label = Callback::invokeSafe($this->renderCallback, [$item['resource']], null);
+            $label = Callback::invokeSafe($this->onRender, [$item['resource']], null);
             // switch element
             if ($this->multiSelect) {
                 $element = $form->addMultiSelect($item['id'], $label);
