@@ -16,10 +16,10 @@
     }
   ],
   "require": {
-    "php": ">=7.0.0",
-    "nette/nette": ">=2.4.0",
-    "geniv/nette-general-form": ">=1.0.0",
-    "geniv/nette-identity-authorizator": ">=1.0.0"
+    "php": ">=7.0",
+    "nette/nette": ">=2.4",
+    "geniv/nette-general-form": ">=1.0",
+    "geniv/nette-identity-authorizator": ">=1.0"
   },
   "autoload": {
     "classmap": [
