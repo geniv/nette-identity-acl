@@ -25,9 +25,9 @@ class RoleFormContainer implements IFormContainer
      */
     public function getForm(Form $form)
     {
-        $form->addText('role', 'acl-roleform-role')
-            ->setRequired('acl-roleform-role-required');
+        $form->addText('role', 'acl-role-form#role')
+            ->setRequired('acl-role-form#role-required');
 
-        $form->addSubmit('save', 'acl-roleform-save');
+        $form->addSubmit('save', 'acl-role-form#save');
     }
 }
