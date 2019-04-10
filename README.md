@@ -77,12 +77,13 @@ protected function createComponentPrivilegeForm(PrivilegeForm $privilegeForm): P
 }
 
 
-protected function createComponentAclForm(AclForm $aclForm, AclFormContainer $aclFormContainer): AclForm
+protected function createComponentAclForm(AclForm $aclForm, AclFormContainer $aclFormContainer, IIdentityAuthorizator $identityAuthorizator): AclForm
 {
     //$aclFormContainer->onRender = function ($data) { return $data; };
     //$aclFormContainer->setMultiSelect(true);
 
 //    $this['aclForm']['form']->setDefaults($this['aclForm']->getDefaults($id));
+//    $this['aclForm']['form']->setDefaults($identityAuthorizator->getAclForm($id));
 
     //$aclForm->setTemplatePath(path);
     //$aclForm->onSuccess[] = function (Form $form, array $values) use ($aclForm) { $aclForm->saveAcl(array $values) };
