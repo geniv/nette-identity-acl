@@ -15,7 +15,8 @@ or
 require:
 ```json
 "php": ">=7.0",
-"nette/nette": ">=2.4",
+"nette/application": ">=2.4",
+"nette/utils": ">=2.4",
 "geniv/nette-general-form": ">=1.0",
 "geniv/nette-identity-authorizator": ">=1.0"
 ```
