@@ -25,9 +25,9 @@ class ResourceFormContainer implements IFormContainer
      */
     public function getForm(Form $form)
     {
-        $form->addText('resource', 'acl-resourceform-resource')
-            ->setRequired('acl-resourceform-role-required');
+        $form->addText('resource', 'acl-resource-form#resource')
+            ->setRequired('acl-resource-form#resource-required');
 
-        $form->addSubmit('save', 'acl-resourceform-save');
+        $form->addSubmit('save', 'acl-resource-form#save');
     }
 }

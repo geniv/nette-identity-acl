@@ -1,14 +1,14 @@
-acl-roleform-role: role
-acl-roleform-role-required: toto pole je povinné
-acl-roleform-save: uložit
+acl-role-form#role: "role"
+acl-role-form#role-required: "toto pole je povinné"
+acl-role-form#save: "uložit"
 
-acl-resourceform-resource: zdroj
-acl-resourceform-role-required: toto pole je povinné
-acl-resourceform-save: uložit
+acl-resource-form#resource: "zdroj"
+acl-resource-form#resource-required: "toto pole je povinné"
+acl-resource-form#save: "uložit"
 
-acl-privilegeform-privilege: oprávnění
-acl-privilegeform-role-required: toto pole je povinné
-acl-privilegeform-save: uložit
+acl-privilege-form#privilege: "oprávnění"
+acl-privilege-form#privilege-required: "toto pole je povinné"
+acl-privilege-form#save: "uložit"
 
-acl-aclform-all: vše
-acl-aclform-save: uložit
+acl-acl-form#all: "vše"
+acl-acl-form#save: "uložit"

@@ -61,7 +61,7 @@ class AclFormContainer implements IFormContainer
         $privilege['all'] = 'all';
         $items = $privilege;
 
-        $form->addCheckbox('all', 'acl-aclform-all');
+        $form->addCheckbox('all', 'acl-acl-form#all');
 
         $listCurrentAcl = $this->identityAuthorizator->loadListCurrentAcl();
         foreach ($this->identityAuthorizator->getResource() as $item) {
@@ -83,6 +83,6 @@ class AclFormContainer implements IFormContainer
             $element->setItems($items)->setTranslator(null);
         }
 
-        $form->addSubmit('save', 'acl-aclform-save');
+        $form->addSubmit('save', 'acl-acl-form#save');
     }
 }

@@ -25,9 +25,9 @@ class PrivilegeFormContainer implements IFormContainer
      */
     public function getForm(Form $form)
     {
-        $form->addText('privilege', 'acl-privilegeform-privilege')
-            ->setRequired('acl-privilegeform-role-required');
+        $form->addText('privilege', 'acl-privilege-form#privilege')
+            ->setRequired('acl-privilege-form#privilege-required');
 
-        $form->addSubmit('save', 'acl-privilegeform-save');
+        $form->addSubmit('save', 'acl-privilege-form#save');
     }
 }

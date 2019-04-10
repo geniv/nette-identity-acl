@@ -9,15 +9,16 @@ $ composer require geniv/nette-identity-acl
 ```
 or
 ```json
-"geniv/nette-identity-acl": ">=1.0.0"
+"geniv/nette-identity-acl": "^2.1"
 ```
 
 require:
 ```json
-"php": ">=7.0.0",
-"nette/nette": ">=2.4.0",
-"geniv/nette-general-form": ">=1.0.0",
-"geniv/nette-identity-authorizator": ">=1.0.0"
+"php": ">=7.0",
+"nette/application": ">=2.4",
+"nette/utils": ">=2.4",
+"geniv/nette-general-form": ">=1.0",
+"geniv/nette-identity-authorizator": ">=1.0"
 ```
 
 Include in application
@@ -77,12 +78,13 @@ protected function createComponentPrivilegeForm(PrivilegeForm $privilegeForm): P
 }
 
 
-protected function createComponentAclForm(AclForm $aclForm, AclFormContainer $aclFormContainer): AclForm
+protected function createComponentAclForm(AclForm $aclForm, AclFormContainer $aclFormContainer, IIdentityAuthorizator $identityAuthorizator): AclForm
 {
     //$aclFormContainer->onRender = function ($data) { return $data; };
     //$aclFormContainer->setMultiSelect(true);
 
 //    $this['aclForm']['form']->setDefaults($this['aclForm']->getDefaults($id));
+//    $this['aclForm']['form']->setDefaults($identityAuthorizator->getAclForm($id));
 
     //$aclForm->setTemplatePath(path);
     //$aclForm->onSuccess[] = function (Form $form, array $values) use ($aclForm) { $aclForm->saveAcl(array $values) };
